@@ -1,24 +1,50 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Microsoft.Maui.Controls;
 
 namespace BuggyTasks.ViewModels;
 
-public partial class NewTaskViewModel : ObservableObject
+public class NewTaskViewModel : INotifyPropertyChanged
 {
-    [ObservableProperty]
-    string newTaskTitle;
+    private string _newTaskTitle = string.Empty;
 
-    public ICommand AddNewTaskCommand { get; } 
+    public string NewTaskTitle
+    {
+        get => _newTaskTitle;
+        set
+        {
+            if (_newTaskTitle != value)
+            {
+                _newTaskTitle = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public ICommand AddTaskCommand { get; }
 
     public NewTaskViewModel()
     {
-        AddNewTaskCommand = new RelayCommand(OnAddTask);
+        AddTaskCommand = new Command(async () => await AddTaskAsync());
     }
 
-    void OnAddTask()
+    private async Task AddTaskAsync()
     {
-        // Simulate adding a task
+        if (string.IsNullOrWhiteSpace(NewTaskTitle))
+            return;
+        
         Console.WriteLine($"Added task: {NewTaskTitle}");
+        
+        NewTaskTitle = string.Empty;
+
+        await Shell.Current.GoToAsync("..");
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged; 
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
