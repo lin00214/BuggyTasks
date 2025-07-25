@@ -3,10 +3,6 @@
              x:Class="BuggyTasks.Views.LocationPage"
              Title="Location">
     <VerticalStackLayout Padding="30" Spacing="10">
-        <Label x:Name="StatusLabel" Text="Getting location..." FontSize="16" />
-        <Label x:Name="LatitudeLabel" Text="Latitude: -" FontSize="14" />
-        <Label x:Name="LongitudeLabel" Text="Longitude: -" FontSize="14" />
-        <Button Text="Get Location" Clicked="OnGetLocationButton" />
         <Button Text="Back" Clicked="OnBackButton" />
     </VerticalStackLayout>
 </ContentPage>
